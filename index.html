@@ -1,0 +1,3017 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عالم الألعاب المتطور</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* أنماط CSS موسعة ومحسنة */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #f72585;
+            --accent-color: #4cc9f0;
+            --dark-color: #1a1a2e;
+            --light-color: #f8f9fa;
+            --success-color: #06d6a0;
+            --warning-color: #ffd166;
+            --danger-color: #ef476f;
+            --gold-color: #ffd700;
+            --silver-color: #c0c0c0;
+            --bronze-color: #cd7f32;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: var(--light-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+            padding-top: 120px;
+        }
+
+        /* شاشة التحميل */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader {
+            width: 80px;
+            height: 80px;
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-top: 8px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* الرأس الثابت */
+        header {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.98), rgba(48, 43, 99, 0.98));
+            padding: 1.2rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(76, 201, 240, 0.4);
+        }
+
+        .logo-text h1 {
+            color: var(--light-color);
+            font-size: 1.8rem;
+            margin-bottom: 0.2rem;
+            background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, var(--primary-color), #3a56d4);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.7rem 1.2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .user-level {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .name-change-modal {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(26, 26, 46, 0.95);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 300px;
+            z-index: 100;
+            display: none;
+        }
+
+        .name-change-modal.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .name-change-modal h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .name-change-input {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .name-change-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .name-change-btn {
+            flex: 1;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .name-change-confirm {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .name-change-cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* المحتوى الرئيسي */
+        main {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 2.5rem;
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        section.active {
+            display: block;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            border-radius: 2px;
+        }
+
+        .section-description {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            line-height: 1.8;
+        }
+
+        /* حاوية الألعاب */
+        .games-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .game-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+        }
+
+        .game-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-image {
+            height: 180px;
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-image:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+        }
+
+        .game-title {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+            text-align: center;
+        }
+
+        .game-description {
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+
+        .game-features {
+            margin-bottom: 1.5rem;
+        }
+
+        .game-features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .game-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .game-features li:before {
+            content: '✓';
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .game-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, var(--secondary-color), #e5176b);
+            color: white;
+            border: none;
+            padding: 0.9rem 1.8rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(247, 37, 133, 0.4);
+        }
+
+        .play-btn:hover {
+            background: linear-gradient(135deg, #e5176b, #c30e5a);
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(247, 37, 133, 0.5);
+        }
+
+        /* منطقة الألعاب */
+        .game-area {
+            background: rgba(0, 0, 0, 0.95);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            display: none;
+        }
+
+        .game-area.active {
+            display: flex;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            width: 900px;
+            margin-bottom: 1.5rem;
+            padding: 0 1rem;
+        }
+
+        .game-stats {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.7rem 1.2rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .game-canvas {
+            background: #111;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .game-controls {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, var(--primary-color), #3a56d4);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background: linear-gradient(135deg, #5a7bbf, #4a6baf);
+            transform: scale(1.05);
+        }
+
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+
+        .close-game {
+            background: linear-gradient(135deg, var(--secondary-color), #e5176b);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(247, 37, 133, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .close-game:hover {
+            transform: rotate(90deg);
+        }
+
+        /* لوحة التحكم في اللعبة */
+        .control-panel {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .panel-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* قسم الإنجازات */
+        .badges {
+            display: flex;
+            gap: 10px;
+            margin: 1rem 0;
+            justify-content: center;
+        }
+
+        .badge {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .badge-gold {
+            background: linear-gradient(135deg, var(--gold-color), #ffed4e);
+            color: #8a6d00;
+        }
+
+        .badge-silver {
+            background: linear-gradient(135deg, var(--silver-color), #e8e8e8);
+            color: #5a5a5a;
+        }
+
+        .badge-bronze {
+            background: linear-gradient(135deg, var(--bronze-color), #e8b16d);
+            color: #5a3c00;
+        }
+
+        /* التذييل */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: right;
+        }
+
+        .footer-section h3 {
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--light-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--accent-color);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+        }
+
+        /* تصميم متجاوب */
+        @media (max-width: 1200px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .games-container {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+            
+            .game-canvas {
+                width: 95%;
+                height: auto;
+            }
+            
+            .game-header {
+                width: 95%;
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 180px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-btn {
+                padding: 0.7rem 1.2rem;
+                font-size: 1rem;
+            }
+            
+            .games-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .game-controls {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .control-btn {
+                padding: 0.8rem 1.2rem;
+                min-width: 110px;
+            }
+            
+            .game-stats {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .stat {
+                padding: 0.5rem 1rem;
+            }
+        }
+
+        /* تأثيرات إضافية */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(76, 201, 240, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(76, 201, 240, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(76, 201, 240, 0);
+            }
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* شريط التقدم */
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* النجوم */
+        .stars {
+            display: flex;
+            gap: 5px;
+            margin: 1rem 0;
+        }
+
+        .star {
+            color: var(--warning-color);
+        }
+
+        /* أزرار خاصة */
+        .special-btn {
+            background: linear-gradient(135deg, var(--accent-color), #3ab8db);
+            box-shadow: 0 5px 15px rgba(76, 201, 240, 0.4);
+        }
+
+        .special-btn:hover {
+            background: linear-gradient(135deg, #3ab8db, #2aa3c4);
+        }
+
+        /* عناصر اللعبة */
+        .level-selector {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            justify-content: center;
+        }
+
+        .level-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .level-btn.active {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+        }
+
+        .level-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* تأثيرات النص */
+        .glow-text {
+            text-shadow: 0 0 10px rgba(76, 201, 240, 0.7);
+        }
+
+        /* إشعارات */
+        .notification {
+            position: fixed;
+            top: 120px;
+            right: 20px;
+            background: var(--success-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.active {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: var(--danger-color);
+        }
+
+        .notification.warning {
+            background: var(--warning-color);
+            color: #333;
+        }
+
+        /* أقسام جديدة */
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 1.5rem;
+            max-height: 500px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-input, .form-textarea {
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+        }
+
+        /* تحسينات للألعاب */
+        .game-instructions {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .achievement-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .achievement-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .achievement-details {
+            flex: 1;
+        }
+
+        .achievement-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-progress {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .achievement-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .achievement-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- شاشة التحميل -->
+    <div id="loading-screen">
+        <div class="loader"></div>
+        <h2>جاري تحميل عالم الألعاب...</h2>
+        <p>يرجى الانتظار قليلاً</p>
+    </div>
+
+    <!-- الرأس الثابت -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>عالم الألعاب المتطور</h1>
+                    <p>تجربة لعب استثنائية لا تُنسى</p>
+                </div>
+            </div>
+            
+            <nav>
+                <button class="nav-btn active" data-target="games-section">
+                    <i class="fas fa-gamepad"></i>
+                    قسم الألعاب
+                </button>
+                <button class="nav-btn" data-target="achievements-section">
+                    <i class="fas fa-trophy"></i>
+                    الإنجازات
+                </button>
+                <button class="nav-btn" data-target="faq-section">
+                    <i class="fas fa-question-circle"></i>
+                    الأسئلة الشائعة
+                </button>
+                <button class="nav-btn" data-target="support-section">
+                    <i class="fas fa-headset"></i>
+                    الدعم والمساعدة
+                </button>
+            </nav>
+            
+            <div class="user-info">
+                <div class="user-avatar" id="user-avatar">م</div>
+                <div class="user-details">
+                    <div class="user-name" id="user-name">مرحباً، محمد!</div>
+                    <div class="user-level">المستوى: <span id="user-level">12</span></div>
+                </div>
+                
+                <div class="name-change-modal" id="name-change-modal">
+                    <h3>تغيير الاسم</h3>
+                    <input type="text" class="name-change-input" id="name-change-input" placeholder="أدخل اسمك الجديد">
+                    <div class="name-change-buttons">
+                        <button class="name-change-btn name-change-confirm" id="name-change-confirm">تأكيد</button>
+                        <button class="name-change-btn name-change-cancel" id="name-change-cancel">إلغاء</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- إشعار -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text">تم تغيير الاسم بنجاح!</span>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <main>
+        <!-- قسم الألعاب -->
+        <section id="games-section" class="active">
+            <h2>ألعابنا الممتعة</h2>
+            <p class="section-description">
+                استمتع بمجموعة متنوعة من الألعاب المثيرة والمليئة بالتحديات. اختر لعبتك المفضلة وابدأ رحلة المغامرة!
+            </p>
+            
+            <div class="games-container">
+                <!-- لعبة السيارات -->
+                <div class="game-card">
+                    <div class="game-image">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3 class="game-title">سيارات</h3>
+                    <p class="game-description">
+                        لعبة سباق سيارات واقعية مع تحديات متعددة. تجنب العوائق واجمع النقاط لتتفوق على منافسيك!
+                    </p>
+                    
+                    <div class="game-features">
+                        <ul>
+                            <li>رسومات واقعية عالية الجودة</li>
+                            <li>أنماط قيادة متعددة</li>
+                            <li>تحديات يومية وجوائز</li>
+                            <li>نظام ترتيب عالمي</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="level-selector">
+                        <button class="level-btn active" data-level="1">سهل</button>
+                        <button class="level-btn" data-level="2">متوسط</button>
+                        <button class="level-btn" data-level="3">صعب</button>
+                    </div>
+                    
+                    <div class="game-meta">
+                        <div><i class="fas fa-users"></i> 12,345 لاعب</div>
+                        <div><i class="fas fa-star"></i> 4.8/5</div>
+                    </div>
+                    
+                    <button class="play-btn pulse" data-game="car-game">
+                        <i class="fas fa-play-circle"></i>
+                        ابدأ اللعبة
+                    </button>
+                </div>
+
+                <!-- لعبة الجري -->
+                <div class="game-card">
+                    <div class="game-image">
+                        <i class="fas fa-running"></i>
+                    </div>
+                    <h3 class="game-title">الجري</h3>
+                    <p class="game-description">
+                        لعبة الجري الكلاسيكية بمستويات متقدمة! اجعل الشخصية تجري وتجنب العوائق للحصول على نقاط أعلى.
+                    </p>
+                    
+                    <div class="game-features">
+                        <ul>
+                            <li>شخصيات قابلة للتخصيص</li>
+                            <li>عوائق ديناميكية ومتغيرة</li>
+                            <li>قدرات خاصة وجوائز</li>
+                            <li>منافسة مع الأصدقاء</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="level-selector">
+                        <button class="level-btn active" data-level="1">سهل</button>
+                        <button class="level-btn" data-level="2">متوسط</button>
+                        <button class="level-btn" data-level="3">صعب</button>
+                    </div>
+                    
+                    <div class="game-meta">
+                        <div><i class="fas fa-users"></i> 9,876 لاعب</div>
+                        <div><i class="fas fa-star"></i> 4.6/5</div>
+                    </div>
+                    
+                    <button class="play-btn" data-game="running-game">
+                        <i class="fas fa-play-circle"></i>
+                        ابدأ اللعبة
+                    </button>
+                </div>
+
+                <!-- لعبة من فكرتنا -->
+                <div class="game-card">
+                    <div class="game-image floating">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="game-title">مغامرة الفضاء</h3>
+                    <p class="game-description">
+                        لعبة من تصميمنا الخاص! قم بقيادة مركبة فضائية وتجنب الكويكبات واجمع الوقود لتبقى في الفضاء.
+                    </p>
+                    
+                    <div class="game-features">
+                        <ul>
+                            <li>عوالم فضائية متنوعة</li>
+                            <li>مركبات قابلة للترقية</li>
+                            <li>أعداء ذكيون وقادة</li>
+                            <li>مهام إضافية وجوائز</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="level-selector">
+                        <button class="level-btn active" data-level="1">سهل</button>
+                        <button class="level-btn" data-level="2">متوسط</button>
+                        <button class="level-btn" data-level="3">صعب</button>
+                    </div>
+                    
+                    <div class="game-meta">
+                        <div><i class="fas fa-users"></i> 7,543 لاعب</div>
+                        <div><i class="fas fa-star"></i> 4.9/5</div>
+                    </div>
+                    
+                    <button class="play-btn" data-game="space-game">
+                        <i class="fas fa-play-circle"></i>
+                        ابدأ اللعبة
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم الإنجازات -->
+        <section id="achievements-section">
+            <h2>إنجازاتي</h2>
+            <p class="section-description">
+                تتبع تقدمك في الألعاب واكسب شارات الإنجازات المختلفة. تحدى نفسك لتحقيق جميع الإنجازات!
+            </p>
+            
+            <div class="badges">
+                <div class="badge badge-gold">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="badge badge-silver">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <div class="badge badge-bronze">
+                    <i class="fas fa-award"></i>
+                </div>
+                <div class="badge">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="badge">
+                    <i class="fas fa-crown"></i>
+                </div>
+            </div>
+            
+            <div class="games-container">
+                <div class="game-card">
+                    <h3 class="game-title">إنجازات لعبة السيارات</h3>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 65%"></div>
+                    </div>
+                    <p>65% مكتمل</p>
+                    
+                    <div class="game-features">
+                        <ul>
+                            <li><i class="fas fa-check-circle" style="color: var(--accent-color);"></i> إكمال المستوى الأول</li>
+                            <li><i class="fas fa-check-circle" style="color: var(--accent-color);"></i> تجميع 1000 نقطة</li>
+                            <li><i class="fas fa-check-circle" style="color: var(--accent-color);"></i> تفادي 50 عائق</li>
+                            <li><i class="far fa-circle" style="color: var(--secondary-color);"></i> إنهاء اللعبة بدون أخطاء</li>
+                            <li><i class="far fa-circle" style="color: var(--secondary-color);"></i> الوصول للمركز الأول</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <h3 class="game-title">إنجازات لعبة الجري</h3>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 40%"></div>
+                    </div>
+                    <p>40% مكتمل</p>
+                    
+                    <div class="game-features">
+                        <ul>
+                            <li><i class="fas fa-check-circle" style="color: var(--accent-color);"></i> الجري لمسافة 1 كم</li>
+                            <li><i class="fas fa-check-circle" style="color: var(--accent-color);"></i> تجميع 500 نقطة</li>
+                            <li><i class="far fa-circle" style="color: var(--secondary-color);"></i> القفز 100 مرة</li>
+                            <li><i class="far fa-circle" style="color: var(--secondary-color);"></i> إنهاء 5 مستويات</li>
+                            <li><i class="far fa-circle" style="color: var(--secondary-color);"></i> تفادي جميع العوائق في مستوى</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <h3 class="game-title">إنجازات مغامرة الفضاء</h3>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 25%"></div>
+                    </div>
+                    <p>25% مكتمل</p>
+                    
+                    <div class="game-features">
+                        <ul>
+                            <li><i class="fas fa-check-circle" style="color: var(--accent-color);"></i> تدمير 10 كويكبات</li>
+                            <li><i class="far fa-circle" style="color: var(--secondary-color);"></i> جمع 1000 وحدة وقود</li>
+                            <li><i class="far fa-circle" style="color: var(--secondary-color);"></i> تدمير سفينة فضائية معادية</li>
+                            <li><i class="far fa-circle" style="color: var(--secondary-color);"></i> الوصول إلى المجرة البعيدة</li>
+                            <li><i class="far fa-circle" style="color: var(--secondary-color);"></i> إنهاء اللعبة بنسبة 100%</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم الأسئلة الشائعة -->
+        <section id="faq-section">
+            <h2>الأسئلة الشائعة</h2>
+            <p class="section-description">
+                تجد هنا إجابات للأسئلة الأكثر شيوعاً حول منصة الألعاب وكيفية استخدامها.
+            </p>
+            
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>كيف يمكنني تغيير اسم المستخدم؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>يمكنك تغيير اسم المستخدم بالنقر على اسمك أو صورتك في الزاوية العلوية اليمنى، ثم إدخال الاسم الجديد والنقر على تأكيد.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>كيف يمكنني كسب النقاط والارتقاء في المستويات؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>يمكنك كسب النقاط من خلال لعب الألعاب المختلفة وإكمال التحديات والإنجازات. كلما زادت نقاطك، ارتفع مستواك في المنصة.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>هل يمكنني لعب الألعاب بدون إنشاء حساب؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نعم، يمكنك لعب الألعاب كضيف، لكن لن يتم حفظ تقدمك أو إنجازاتك. ننصح بإنشاء حساب للاستفادة الكاملة من الميزات.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>كيف يمكنني الإبلاغ عن مشكلة في اللعبة؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>يمكنك استخدام قسم "اتصل بنا" أو "الإبلاغ عن مشكلة" في التذييل لإرسال تقرير عن أي مشكلة تواجهها أثناء اللعب.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم الدعم والمساعدة -->
+        <section id="support-section">
+            <h2>الدعم والمساعدة</h2>
+            <p class="section-description">
+                نحن هنا لمساعدتك! إذا كنت تواجه أي مشكلة أو لديك استفسار، لا تتردد في التواصل معنا.
+            </p>
+            
+            <div class="contact-form">
+                <div class="form-group">
+                    <label for="contact-name">الاسم الكامل</label>
+                    <input type="text" id="contact-name" class="form-input" placeholder="أدخل اسمك الكامل">
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact-email">البريد الإلكتروني</label>
+                    <input type="email" id="contact-email" class="form-input" placeholder="أدخل بريدك الإلكتروني">
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact-subject">موضوع الرسالة</label>
+                    <input type="text" id="contact-subject" class="form-input" placeholder="موضوع رسالتك">
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact-message">الرسالة</label>
+                    <textarea id="contact-message" class="form-textarea" placeholder="اكتب رسالتك هنا..."></textarea>
+                </div>
+                
+                <button class="submit-btn" id="contact-submit">
+                    <i class="fas fa-paper-plane"></i>
+                    إرسال الرسالة
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- منطقة الألعاب -->
+    <div id="game-area" class="game-area">
+        <div class="game-header">
+            <div class="game-stats">
+                <div class="stat">
+                    <i class="fas fa-star"></i>
+                    <span id="score">النقاط: 0</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-heart"></i>
+                    <span id="lives">الأرواح: 3</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-layer-group"></i>
+                    <span id="level">المستوى: 1</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span id="speed">السرعة: 1x</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-shield-alt"></i>
+                    <span id="shield">الدرع: 0</span>
+                </div>
+            </div>
+            
+            <button class="close-game">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <canvas id="game-canvas" class="game-canvas" width="900" height="550"></canvas>
+        
+        <div class="game-controls">
+            <button id="left-btn" class="control-btn">
+                <i class="fas fa-arrow-left"></i>
+                يسار
+            </button>
+            <button id="right-btn" class="control-btn">
+                يمين
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <button id="jump-btn" class="control-btn">
+                <i class="fas fa-arrow-up"></i>
+                قفز
+            </button>
+            <button id="action-btn" class="control-btn">
+                <i class="fas fa-bolt"></i>
+                إجراء
+            </button>
+            <button id="boost-btn" class="control-btn special-btn">
+                <i class="fas fa-rocket"></i>
+                تيربو
+            </button>
+        </div>
+        
+        <div class="control-panel">
+            <button class="panel-btn" id="pause-btn">
+                <i class="fas fa-pause"></i>
+                إيقاف
+            </button>
+            <button class="panel-btn" id="sound-btn">
+                <i class="fas fa-volume-up"></i>
+                صوت
+            </button>
+            <button class="panel-btn" id="settings-btn">
+                <i class="fas fa-cog"></i>
+                إعدادات
+            </button>
+            <button class="panel-btn" id="restart-btn">
+                <i class="fas fa-redo"></i>
+                إعادة
+            </button>
+        </div>
+    </div>
+
+    <!-- التذييل -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>عن الموقع</h3>
+                <p>منصة ألعاب تفاعلية تقدم تجربة مستخدم فريدة وممتعة للجميع.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="#" data-target="games-section"><i class="fas fa-gamepad"></i> قسم الألعاب</a></li>
+                    <li><a href="#" data-target="achievements-section"><i class="fas fa-trophy"></i> الإنجازات</a></li>
+                    <li><a href="#" data-target="faq-section"><i class="fas fa-question-circle"></i> الأسئلة الشائعة</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>الدعم والمساعدة</h3>
+                <ul class="footer-links">
+                    <li><a href="#" data-target="support-section"><i class="fas fa-headset"></i> اتصل بنا</a></li>
+                    <li><a href="#" id="privacy-link"><i class="fas fa-shield-alt"></i> الخصوصية</a></li>
+                    <li><a href="#" id="terms-link"><i class="fas fa-file-contract"></i> الشروط والأحكام</a></li>
+                    <li><a href="#" data-target="support-section"><i class="fas fa-bug"></i> الإبلاغ عن مشكلة</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>جميع الحقوق محفوظة &copy; 2026 - عالم الألعاب المتطور</p>
+        </div>
+    </footer>
+
+    <script>
+        // إخفاء شاشة التحميل بعد تحميل الصفحة
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loading-screen').style.opacity = '0';
+                setTimeout(function() {
+                    document.getElementById('loading-screen').style.display = 'none';
+                }, 500);
+            }, 1500);
+        });
+
+        // متغيرات التطبيق
+        let currentUser = {
+            name: "محمد",
+            level: 12,
+            achievements: {
+                'car-game': 65,
+                'running-game': 40,
+                'space-game': 25
+            }
+        };
+
+        // تحديث واجهة المستخدم
+        function updateUserInterface() {
+            document.getElementById('user-name').textContent = `مرحباً، ${currentUser.name}!`;
+            document.getElementById('user-level').textContent = currentUser.level;
+            document.getElementById('user-avatar').textContent = currentUser.name.charAt(0);
+            
+            // تحديث شريط التقدم في قسم الإنجازات
+            document.querySelectorAll('.progress').forEach(progressBar => {
+                const gameCard = progressBar.closest('.game-card');
+                const gameTitle = gameCard.querySelector('.game-title').textContent;
+                let progressValue = 0;
+                
+                if (gameTitle.includes('السيارات')) {
+                    progressValue = currentUser.achievements['car-game'];
+                } else if (gameTitle.includes('الجري')) {
+                    progressValue = currentUser.achievements['running-game'];
+                } else if (gameTitle.includes('الفضاء')) {
+                    progressValue = currentUser.achievements['space-game'];
+                }
+                
+                progressBar.style.width = `${progressValue}%`;
+                gameCard.querySelector('p').textContent = `${progressValue}% مكتمل`;
+            });
+        }
+
+        // إظهار الإشعار
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            
+            notificationText.textContent = message;
+            notification.className = 'notification';
+            notification.classList.add(type);
+            notification.classList.add('active');
+            
+            setTimeout(() => {
+                notification.classList.remove('active');
+            }, 3000);
+        }
+
+        // تغيير اسم المستخدم
+        document.getElementById('user-avatar').addEventListener('click', function() {
+            document.getElementById('name-change-modal').classList.add('active');
+            document.getElementById('name-change-input').value = currentUser.name;
+            document.getElementById('name-change-input').focus();
+        });
+
+        document.getElementById('user-name').addEventListener('click', function() {
+            document.getElementById('name-change-modal').classList.add('active');
+            document.getElementById('name-change-input').value = currentUser.name;
+            document.getElementById('name-change-input').focus();
+        });
+
+        document.getElementById('name-change-confirm').addEventListener('click', function() {
+            const newName = document.getElementById('name-change-input').value.trim();
+            if (newName && newName.length > 0) {
+                currentUser.name = newName;
+                updateUserInterface();
+                document.getElementById('name-change-modal').classList.remove('active');
+                showNotification('تم تغيير الاسم بنجاح!');
+            } else {
+                showNotification('يرجى إدخال اسم صحيح', 'error');
+            }
+        });
+
+        document.getElementById('name-change-cancel').addEventListener('click', function() {
+            document.getElementById('name-change-modal').classList.remove('active');
+        });
+
+        // إغلاق نافذة تغيير الاسم عند النقر خارجها
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('name-change-modal');
+            const userInfo = document.querySelector('.user-info');
+            
+            if (!userInfo.contains(event.target) && modal.classList.contains('active')) {
+                modal.classList.remove('active');
+            }
+        });
+
+        // التنقل بين الأقسام
+        document.querySelectorAll('.nav-btn, .footer-links a').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('data-target');
+                
+                if (targetId) {
+                    // إزالة الفئة النشطة من جميع أزرار التنقل
+                    document.querySelectorAll('.nav-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // إضافة الفئة النشطة للزر المختار (إذا كان زر تنقل)
+                    if (this.classList.contains('nav-btn')) {
+                        this.classList.add('active');
+                    }
+                    
+                    // إخفاء جميع الأقسام
+                    document.querySelectorAll('section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // إظهار القسم المختار
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                        
+                        // التمرير إلى القسم
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // الأسئلة الشائعة - تفعيل/إلغاء تفعيل الأسئلة
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const faqItem = this.parentElement;
+                faqItem.classList.toggle('active');
+                
+                // إغلاق الأسئلة الأخرى
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    if (item !== faqItem) {
+                        item.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // إرسال نموذج الاتصال
+        document.getElementById('contact-submit').addEventListener('click', function() {
+            const name = document.getElementById('contact-name').value.trim();
+            const email = document.getElementById('contact-email').value.trim();
+            const subject = document.getElementById('contact-subject').value.trim();
+            const message = document.getElementById('contact-message').value.trim();
+            
+            if (!name || !email || !subject || !message) {
+                showNotification('يرجى ملء جميع الحقول', 'error');
+                return;
+            }
+            
+            // محاكاة إرسال الرسالة
+            setTimeout(() => {
+                document.getElementById('contact-name').value = '';
+                document.getElementById('contact-email').value = '';
+                document.getElementById('contact-subject').value = '';
+                document.getElementById('contact-message').value = '';
+                showNotification('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.');
+            }, 1000);
+        });
+
+        // اختيار المستوى
+        document.querySelectorAll('.level-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // إزالة الفئة النشطة من جميع أزرار المستوى
+                this.parentElement.querySelectorAll('.level-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // إضافة الفئة النشطة للزر المختار
+                this.classList.add('active');
+            });
+        });
+
+        // التحكم في الألعاب
+        document.querySelectorAll('.play-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const gameType = button.getAttribute('data-game');
+                const level = button.parentElement.querySelector('.level-btn.active').getAttribute('data-level');
+                startGame(gameType, level);
+            });
+        });
+
+        // إغلاق اللعبة
+        document.querySelector('.close-game').addEventListener('click', () => {
+            document.getElementById('game-area').classList.remove('active');
+            // إيقاف اللعبة
+            if (gameInterval) {
+                clearInterval(gameInterval);
+            }
+            // إيقاف الأصوات
+            stopAllSounds();
+        });
+
+        // أزرار التحكم في اللعبة
+        document.getElementById('pause-btn').addEventListener('click', togglePause);
+        document.getElementById('sound-btn').addEventListener('click', toggleSound);
+        document.getElementById('settings-btn').addEventListener('click', showSettings);
+        document.getElementById('restart-btn').addEventListener('click', restartGame);
+
+        // تأثيرات تفاعلية للأزرار
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', function() {
+                this.style.transform = 'scale(0.95)';
+                playSound('click');
+            });
+            
+            button.addEventListener('mouseup', function() {
+                this.style.transform = '';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+
+        // نظام الأصوات
+        let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let isSoundOn = true;
+
+        // أصوات اللعبة
+        const sounds = {
+            click: { frequency: 800, duration: 0.1, type: 'sine' },
+            move: { frequency: 600, duration: 0.05, type: 'sine' },
+            jump: { frequency: 1000, duration: 0.2, type: 'sine' },
+            collect: { frequency: 1200, duration: 0.1, type: 'square' },
+            crash: { frequency: 300, duration: 0.3, type: 'sawtooth' },
+            levelUp: { frequency: 1500, duration: 0.5, type: 'sine' },
+            gameOver: { frequency: 200, duration: 1, type: 'sawtooth' }
+        };
+
+        // تشغيل الصوت
+        function playSound(soundName) {
+            if (!isSoundOn) return;
+            
+            const sound = sounds[soundName];
+            if (!sound) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = sound.frequency;
+            oscillator.type = sound.type;
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + sound.duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + sound.duration);
+        }
+
+        // إيقاف جميع الأصوات
+        function stopAllSounds() {
+            // لا توجد طريقة مباشرة لإيقاف جميع الأصوات في Web Audio API
+            // نعيد إنشاء السياق لإيقاف جميع الأصوات
+            audioContext.close().then(() => {
+                // إعادة إنشاء السياق
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            });
+        }
+
+        // تبديل الصوت في اللعبة
+        function toggleSound() {
+            isSoundOn = !isSoundOn;
+            const btn = document.getElementById('sound-btn');
+            if (isSoundOn) {
+                btn.innerHTML = '<i class="fas fa-volume-up"></i> صوت';
+                playSound('click');
+            } else {
+                btn.innerHTML = '<i class="fas fa-volume-mute"></i> كتم';
+            }
+        }
+
+        // تبديل الإيقاف المؤقت للعبة
+        function togglePause() {
+            isPaused = !isPaused;
+            const btn = document.getElementById('pause-btn');
+            if (isPaused) {
+                btn.innerHTML = '<i class="fas fa-play"></i> استئناف';
+                if (gameInterval) {
+                    clearInterval(gameInterval);
+                    gameInterval = null;
+                }
+            } else {
+                btn.innerHTML = '<i class="fas fa-pause"></i> إيقاف';
+                // استئناف اللعبة حسب النوع
+                const canvas = document.getElementById('game-canvas');
+                const ctx = canvas.getContext('2d');
+                if (currentGame === 'car-game') {
+                    startCarGame(ctx, canvas, currentLevel);
+                } else if (currentGame === 'running-game') {
+                    startRunningGame(ctx, canvas, currentLevel);
+                } else if (currentGame === 'space-game') {
+                    startSpaceGame(ctx, canvas, currentLevel);
+                }
+            }
+            playSound('click');
+        }
+
+        // إظهار إعدادات اللعبة
+        function showSettings() {
+            alert('إعدادات اللعبة:\n- الصوت: ' + (isSoundOn ? 'مفعل' : 'معطل') + '\n- مستوى الصعوبة: ' + currentLevel);
+            playSound('click');
+        }
+
+        // إعادة تشغيل اللعبة
+        function restartGame() {
+            if (confirm('هل تريد إعادة تشغيل اللعبة؟')) {
+                playSound('click');
+                startGame(currentGame, currentLevel);
+            }
+        }
+
+        // متغيرات اللعبة
+        let gameInterval;
+        let currentGame = null;
+        let currentLevel = 1;
+        let score = 0;
+        let lives = 3;
+        let level = 1;
+        let speed = 1;
+        let shield = 0;
+        let isPaused = false;
+
+        // بدء اللعبة
+        function startGame(gameType, level) {
+            document.getElementById('game-area').classList.add('active');
+            currentGame = gameType;
+            currentLevel = parseInt(level);
+            score = 0;
+            lives = 3;
+            level = 1;
+            speed = 1;
+            shield = 0;
+            isPaused = false;
+            
+            updateGameStats();
+            
+            const canvas = document.getElementById('game-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // مسح اللوحة
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // بدء اللعبة حسب النوع
+            if (gameType === 'car-game') {
+                startCarGame(ctx, canvas, currentLevel);
+            } else if (gameType === 'running-game') {
+                startRunningGame(ctx, canvas, currentLevel);
+            } else if (gameType === 'space-game') {
+                startSpaceGame(ctx, canvas, currentLevel);
+            }
+            
+            playSound('levelUp');
+        }
+
+        // تحديث إحصائيات اللعبة
+        function updateGameStats() {
+            document.getElementById('score').textContent = `النقاط: ${score}`;
+            document.getElementById('lives').textContent = `الأرواح: ${lives}`;
+            document.getElementById('level').textContent = `المستوى: ${level}`;
+            document.getElementById('speed').textContent = `السرعة: ${speed}x`;
+            document.getElementById('shield').textContent = `الدرع: ${shield}`;
+        }
+
+        // لعبة السيارات
+        function startCarGame(ctx, canvas, gameLevel) {
+            // متغيرات اللعبة
+            let carX = canvas.width / 2 - 25;
+            let carY = canvas.height - 100;
+            let carWidth = 50;
+            let carHeight = 80;
+            let obstacles = [];
+            let powerUps = [];
+            let obstacleSpeed = 3 + (gameLevel - 1) * 1.5;
+            let obstacleFrequency = 60 - (gameLevel - 1) * 10;
+            let roadOffset = 0;
+            let turboActive = false;
+            let turboTime = 0;
+            
+            // رسم السيارة
+            function drawCar() {
+                // هيكل السيارة
+                ctx.fillStyle = '#e74c3c';
+                ctx.fillRect(carX, carY, carWidth, carHeight);
+                
+                // تفاصيل السيارة
+                ctx.fillStyle = '#c0392b';
+                ctx.fillRect(carX + 5, carY + 5, carWidth - 10, 15);
+                ctx.fillRect(carX + 5, carY + 25, carWidth - 10, 15);
+                ctx.fillRect(carX + 5, carY + 45, carWidth - 10, 15);
+                
+                // النوافذ
+                ctx.fillStyle = '#3498db';
+                ctx.fillRect(carX + 10, carY + 10, 10, 10);
+                ctx.fillRect(carX + carWidth - 20, carY + 10, 10, 10);
+                ctx.fillRect(carX + 10, carY + 30, carWidth - 20, 10);
+                
+                // العجلات
+                ctx.fillStyle = '#2c3e50';
+                ctx.fillRect(carX - 5, carY + 10, 5, 20);
+                ctx.fillRect(carX + carWidth, carY + 10, 5, 20);
+                ctx.fillRect(carX - 5, carY + carHeight - 30, 5, 20);
+                ctx.fillRect(carX + carWidth, carY + carHeight - 30, 5, 20);
+                
+                // تأثير التيربو
+                if (turboActive) {
+                    ctx.fillStyle = 'rgba(76, 201, 240, 0.5)';
+                    ctx.fillRect(carX - 10, carY + carHeight - 10, carWidth + 20, 10);
+                }
+            }
+            
+            // رسم الطريق
+            function drawRoad() {
+                // الطريق
+                ctx.fillStyle = '#34495e';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // خطوط الطريق
+                ctx.fillStyle = '#f1c40f';
+                for (let i = 0; i < canvas.width; i += 40) {
+                    ctx.fillRect(i, (roadOffset * 2) % 40, 20, 10);
+                }
+                
+                // جانبي الطريق
+                ctx.fillStyle = '#7f8c8d';
+                ctx.fillRect(0, 0, 30, canvas.height);
+                ctx.fillRect(canvas.width - 30, 0, 30, canvas.height);
+            }
+            
+            // رسم العوائق
+            function drawObstacles() {
+                ctx.fillStyle = '#f39c12';
+                obstacles.forEach(obstacle => {
+                    ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+                    
+                    // تفاصيل العائق
+                    ctx.fillStyle = '#e67e22';
+                    ctx.fillRect(obstacle.x + 5, obstacle.y + 5, obstacle.width - 10, 5);
+                    ctx.fillRect(obstacle.x + 5, obstacle.y + 15, obstacle.width - 10, 5);
+                });
+                ctx.fillStyle = '#f39c12';
+            }
+            
+            // رسم العناصر الخاصة
+            function drawPowerUps() {
+                powerUps.forEach(powerUp => {
+                    if (powerUp.type === 'shield') {
+                        ctx.fillStyle = '#4361ee';
+                        ctx.beginPath();
+                        ctx.arc(powerUp.x + 15, powerUp.y + 15, 15, 0, Math.PI * 2);
+                        ctx.fill();
+                        
+                        ctx.fillStyle = 'white';
+                        ctx.font = 'bold 20px Arial';
+                        ctx.fillText('S', powerUp.x + 8, powerUp.y + 22);
+                    } else if (powerUp.type === 'heart') {
+                        ctx.fillStyle = '#f72585';
+                        ctx.beginPath();
+                        ctx.arc(powerUp.x + 15, powerUp.y + 15, 15, 0, Math.PI * 2);
+                        ctx.fill();
+                        
+                        ctx.fillStyle = 'white';
+                        ctx.font = 'bold 20px Arial';
+                        ctx.fillText('H', powerUp.x + 8, powerUp.y + 22);
+                    } else if (powerUp.type === 'turbo') {
+                        ctx.fillStyle = '#4cc9f0';
+                        ctx.beginPath();
+                        ctx.arc(powerUp.x + 15, powerUp.y + 15, 15, 0, Math.PI * 2);
+                        ctx.fill();
+                        
+                        ctx.fillStyle = 'white';
+                        ctx.font = 'bold 20px Arial';
+                        ctx.fillText('T', powerUp.x + 8, powerUp.y + 22);
+                    }
+                });
+            }
+            
+            // إنشاء عوائق جديدة
+            function createObstacle() {
+                const width = Math.random() * 50 + 30;
+                const types = ['normal', 'moving', 'double'];
+                const type = types[Math.floor(Math.random() * types.length)];
+                
+                obstacles.push({
+                    x: Math.random() * (canvas.width - width - 60) + 30,
+                    y: -30,
+                    width: width,
+                    height: 30,
+                    type: type,
+                    direction: Math.random() > 0.5 ? 1 : -1,
+                    speed: Math.random() * 2 + 1
+                });
+            }
+            
+            // إنشاء عناصر خاصة
+            function createPowerUp() {
+                const types = ['shield', 'heart', 'turbo'];
+                const type = types[Math.floor(Math.random() * types.length)];
+                
+                powerUps.push({
+                    x: Math.random() * (canvas.width - 60) + 30,
+                    y: -30,
+                    width: 30,
+                    height: 30,
+                    type: type
+                });
+            }
+            
+            // تحديث موقع العوائق والعناصر الخاصة
+            function updateObjects() {
+                // تحديث العوائق
+                for (let i = obstacles.length - 1; i >= 0; i--) {
+                    obstacles[i].y += obstacleSpeed;
+                    
+                    // تحريك العوائق المتحركة
+                    if (obstacles[i].type === 'moving') {
+                        obstacles[i].x += obstacles[i].speed * obstacles[i].direction;
+                        
+                        // تغيير الاتجاه عند الوصول للحافة
+                        if (obstacles[i].x < 30 || obstacles[i].x + obstacles[i].width > canvas.width - 30) {
+                            obstacles[i].direction *= -1;
+                        }
+                    }
+                    
+                    // اكتشاف التصادم
+                    if (obstacles[i].y + obstacles[i].height > carY && 
+                        obstacles[i].x < carX + carWidth && 
+                        obstacles[i].x + obstacles[i].width > carX) {
+                        // تصادم
+                        if (shield > 0) {
+                            shield--;
+                            playSound('collect');
+                        } else {
+                            lives--;
+                            playSound('crash');
+                        }
+                        updateGameStats();
+                        obstacles.splice(i, 1);
+                        
+                        if (lives <= 0) {
+                            endGame();
+                            return;
+                        }
+                    }
+                    
+                    // إزالة العوائق التي تجاوزت اللوحة
+                    if (obstacles[i].y > canvas.height) {
+                        obstacles.splice(i, 1);
+                        score += 10;
+                        updateGameStats();
+                    }
+                }
+                
+                // تحديث العناصر الخاصة
+                for (let i = powerUps.length - 1; i >= 0; i--) {
+                    powerUps[i].y += obstacleSpeed;
+                    
+                    // جمع العناصر الخاصة
+                    if (powerUps[i].x < carX + carWidth && 
+                        powerUps[i].x + powerUps[i].width > carX &&
+                        powerUps[i].y < carY + carHeight && 
+                        powerUps[i].y + powerUps[i].height > carY) {
+                        // جمع العنصر الخاص
+                        if (powerUps[i].type === 'shield') {
+                            shield += 1;
+                        } else if (powerUps[i].type === 'heart') {
+                            lives = Math.min(lives + 1, 5);
+                        } else if (powerUps[i].type === 'turbo') {
+                            turboActive = true;
+                            turboTime = 300; // 5 ثواني عند 60 إطار/ثانية
+                            obstacleSpeed *= 1.5;
+                        }
+                        
+                        playSound('collect');
+                        updateGameStats();
+                        powerUps.splice(i, 1);
+                    }
+                    
+                    // إزالة العناصر الخاصة التي تجاوزت اللوحة
+                    if (powerUps[i].y > canvas.height) {
+                        powerUps.splice(i, 1);
+                    }
+                }
+                
+                // تحديث التيربو
+                if (turboActive) {
+                    turboTime--;
+                    if (turboTime <= 0) {
+                        turboActive = false;
+                        obstacleSpeed /= 1.5;
+                    }
+                }
+            }
+            
+            // التحكم في السيارة
+            document.getElementById('left-btn').onclick = () => {
+                if (carX > 35) {
+                    carX -= 20;
+                    playSound('move');
+                }
+            };
+            
+            document.getElementById('right-btn').onclick = () => {
+                if (carX < canvas.width - carWidth - 35) {
+                    carX += 20;
+                    playSound('move');
+                }
+            };
+            
+            document.getElementById('boost-btn').onclick = () => {
+                if (!turboActive) {
+                    turboActive = true;
+                    turboTime = 180; // 3 ثواني عند 60 إطار/ثانية
+                    obstacleSpeed *= 1.5;
+                    updateGameStats();
+                    playSound('collect');
+                }
+            };
+            
+            // دورة اللعبة
+            let frameCount = 0;
+            gameInterval = setInterval(() => {
+                if (isPaused) return;
+                
+                // مسح اللوحة
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // رسم الطريق
+                drawRoad();
+                
+                // إنشاء عوائق جديدة
+                if (frameCount % obstacleFrequency === 0) {
+                    createObstacle();
+                }
+                
+                // إنشاء عناصر خاصة
+                if (frameCount % 200 === 0) {
+                    createPowerUp();
+                }
+                
+                // تحديث ورسم العوائق والعناصر الخاصة
+                updateObjects();
+                drawObstacles();
+                drawPowerUps();
+                
+                // رسم السيارة
+                drawCar();
+                
+                frameCount++;
+                roadOffset++;
+                
+                // زيادة الصعوبة مع الزمن
+                if (frameCount % 300 === 0) {
+                    obstacleSpeed += 0.5;
+                    level++;
+                    updateGameStats();
+                    playSound('levelUp');
+                }
+            }, 1000 / 60);
+        }
+
+        // لعبة الجري
+        function startRunningGame(ctx, canvas, gameLevel) {
+            // متغيرات اللعبة
+            let runnerX = 100;
+            let runnerY = canvas.height - 150;
+            let runnerWidth = 40;
+            let runnerHeight = 60;
+            let isJumping = false;
+            let isDucking = false;
+            let jumpVelocity = 0;
+            let gravity = 0.5;
+            let obstacles = [];
+            let powerUps = [];
+            let obstacleSpeed = 5 + (gameLevel - 1) * 2;
+            let groundLevel = canvas.height - 90;
+            let turboActive = false;
+            let turboTime = 0;
+            
+            // رسم الشخصية
+            function drawRunner() {
+                // تأثير التيربو
+                if (turboActive) {
+                    ctx.fillStyle = 'rgba(76, 201, 240, 0.3)';
+                    ctx.fillRect(runnerX - 10, runnerY - 10, runnerWidth + 20, runnerHeight + 20);
+                }
+                
+                // تغيير شكل الشخصية حسب الحركة
+                if (isDucking) {
+                    // وضع الانحناء
+                    ctx.fillStyle = '#3498db';
+                    ctx.fillRect(runnerX, runnerY + 30, runnerWidth, runnerHeight - 30);
+                    
+                    // الرأس
+                    ctx.fillStyle = '#ffdbac';
+                    ctx.fillRect(runnerX + 5, runnerY + 10, runnerWidth - 10, 20);
+                } else {
+                    // الوضع الطبيعي
+                    ctx.fillStyle = '#3498db';
+                    ctx.fillRect(runnerX, runnerY, runnerWidth, runnerHeight);
+                    
+                    // الرأس
+                    ctx.fillStyle = '#ffdbac';
+                    ctx.fillRect(runnerX - 5, runnerY - 20, runnerWidth + 10, 20);
+                }
+                
+                // العينان
+                ctx.fillStyle = '#2c3e50';
+                ctx.fillRect(runnerX + 10, runnerY - 15, 5, 5);
+                ctx.fillRect(runnerX + 25, runnerY - 15, 5, 5);
+                
+                // الأرجل في الوضع الطبيعي
+                if (!isDucking) {
+                    ctx.fillStyle = '#2c3e50';
+                    ctx.fillRect(runnerX + 5, runnerY + runnerHeight, 10, 20);
+                    ctx.fillRect(runnerX + 25, runnerY + runnerHeight, 10, 20);
+                }
+                
+                // الدرع
+                if (shield > 0) {
+                    ctx.strokeStyle = '#4361ee';
+                    ctx.lineWidth = 3;
+                    ctx.strokeRect(runnerX - 5, runnerY - 5, runnerWidth + 10, runnerHeight + 10);
+                }
+            }
+            
+            // رسم الخلفية
+            function drawBackground() {
+                // السماء
+                ctx.fillStyle = '#87CEEB';
+                ctx.fillRect(0, 0, canvas.width, groundLevel);
+                
+                // الأرض
+                ctx.fillStyle = '#8b4513';
+                ctx.fillRect(0, groundLevel, canvas.width, canvas.height - groundLevel);
+                
+                // العشب
+                ctx.fillStyle = '#27ae60';
+                ctx.fillRect(0, groundLevel, canvas.width, 10);
+                
+                // الغيوم
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(200, 80, 30, 0, Math.PI * 2);
+                ctx.arc(230, 70, 40, 0, Math.PI * 2);
+                ctx.arc(260, 80, 30, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.beginPath();
+                ctx.arc(500, 120, 25, 0, Math.PI * 2);
+                ctx.arc(530, 110, 35, 0, Math.PI * 2);
+                ctx.arc(560, 120, 25, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // رسم العوائق
+            function drawObstacles() {
+                ctx.fillStyle = '#e74c3c';
+                obstacles.forEach(obstacle => {
+                    if (obstacle.type === 'cactus') {
+                        // رسم صبار
+                        ctx.fillRect(obstacle.x, groundLevel - obstacle.height, 20, obstacle.height);
+                        ctx.fillRect(obstacle.x - 10, groundLevel - obstacle.height + 20, 40, 10);
+                    } else if (obstacle.type === 'bird') {
+                        // رسم طائر
+                        ctx.fillRect(obstacle.x, obstacle.y, 40, 20);
+                        ctx.fillStyle = '#f39c12';
+                        ctx.fillRect(obstacle.x + 35, obstacle.y + 5, 10, 10);
+                    }
+                });
+                ctx.fillStyle = '#e74c3c';
+            }
+            
+            // رسم العناصر الخاصة
+            function drawPowerUps() {
+                powerUps.forEach(powerUp => {
+                    if (powerUp.type === 'shield') {
+                        ctx.fillStyle = '#4361ee';
+                        ctx.beginPath();
+                        ctx.arc(powerUp.x + 15, powerUp.y + 15, 15, 0, Math.PI * 2);
+                        ctx.fill();
+                        
+                        ctx.fillStyle = 'white';
+                        ctx.font = 'bold 20px Arial';
+                        ctx.fillText('S', powerUp.x + 8, powerUp.y + 22);
+                    } else if (powerUp.type === 'heart') {
+                        ctx.fillStyle = '#f72585';
+                        ctx.beginPath();
+                        ctx.arc(powerUp.x + 15, powerUp.y + 15, 15, 0, Math.PI * 2);
+                        ctx.fill();
+                        
+                        ctx.fillStyle = 'white';
+                        ctx.font = 'bold 20px Arial';
+                        ctx.fillText('H', powerUp.x + 8, powerUp.y + 22);
+                    } else if (powerUp.type === 'turbo') {
+                        ctx.fillStyle = '#4cc9f0';
+                        ctx.beginPath();
+                        ctx.arc(powerUp.x + 15, powerUp.y + 15, 15, 0, Math.PI * 2);
+                        ctx.fill();
+                        
+                        ctx.fillStyle = 'white';
+                        ctx.font = 'bold 20px Arial';
+                        ctx.fillText('T', powerUp.x + 8, powerUp.y + 22);
+                    }
+                });
+            }
+            
+            // إنشاء عوائق جديدة
+            function createObstacle() {
+                const types = ['cactus', 'bird'];
+                const type = types[Math.floor(Math.random() * types.length)];
+                
+                if (type === 'cactus') {
+                    const height = Math.random() * 30 + 40;
+                    obstacles.push({
+                        x: canvas.width,
+                        y: groundLevel - height,
+                        width: 20,
+                        height: height,
+                        type: type
+                    });
+                } else if (type === 'bird') {
+                    obstacles.push({
+                        x: canvas.width,
+                        y: groundLevel - 100 - Math.random() * 50,
+                        width: 40,
+                        height: 20,
+                        type: type
+                    });
+                }
+            }
+            
+            // إنشاء عناصر خاصة
+            function createPowerUp() {
+                const types = ['shield', 'heart', 'turbo'];
+                const type = types[Math.floor(Math.random() * types.length)];
+                
+                powerUps.push({
+                    x: canvas.width,
+                    y: groundLevel - 50 - Math.random() * 100,
+                    width: 30,
+                    height: 30,
+                    type: type
+                });
+            }
+            
+            // تحديث موقع العوائق والعناصر الخاصة
+            function updateObjects() {
+                // تحديث العوائق
+                for (let i = obstacles.length - 1; i >= 0; i--) {
+                    obstacles[i].x -= obstacleSpeed;
+                    
+                    // اكتشاف التصادم
+                    let collision = false;
+                    
+                    if (obstacles[i].type === 'cactus') {
+                        collision = (
+                            obstacles[i].x < runnerX + runnerWidth &&
+                            obstacles[i].x + obstacles[i].width > runnerX &&
+                            runnerY + runnerHeight > groundLevel - obstacles[i].height
+                        );
+                    } else if (obstacles[i].type === 'bird') {
+                        collision = (
+                            obstacles[i].x < runnerX + runnerWidth &&
+                            obstacles[i].x + obstacles[i].width > runnerX &&
+                            obstacles[i].y < runnerY + runnerHeight &&
+                            obstacles[i].y + obstacles[i].height > runnerY
+                        );
+                    }
+                    
+                    if (collision) {
+                        // تصادم
+                        if (shield > 0) {
+                            shield--;
+                            playSound('collect');
+                        } else {
+                            lives--;
+                            playSound('crash');
+                        }
+                        updateGameStats();
+                        obstacles.splice(i, 1);
+                        
+                        if (lives <= 0) {
+                            endGame();
+                            return;
+                        }
+                    }
+                    
+                    // إزالة العوائق التي تجاوزت اللوحة
+                    if (obstacles[i].x + obstacles[i].width < 0) {
+                        obstacles.splice(i, 1);
+                        score += 10;
+                        updateGameStats();
+                    }
+                }
+                
+                // تحديث العناصر الخاصة
+                for (let i = powerUps.length - 1; i >= 0; i--) {
+                    powerUps[i].x -= obstacleSpeed;
+                    
+                    // جمع العناصر الخاصة
+                    if (powerUps[i].x < runnerX + runnerWidth && 
+                        powerUps[i].x + powerUps[i].width > runnerX &&
+                        powerUps[i].y < runnerY + runnerHeight && 
+                        powerUps[i].y + powerUps[i].height > runnerY) {
+                        // جمع العنصر الخاص
+                        if (powerUps[i].type === 'shield') {
+                            shield += 1;
+                        } else if (powerUps[i].type === 'heart') {
+                            lives = Math.min(lives + 1, 5);
+                        } else if (powerUps[i].type === 'turbo') {
+                            turboActive = true;
+                            turboTime = 300; // 5 ثواني عند 60 إطار/ثانية
+                            obstacleSpeed *= 1.5;
+                        }
+                        
+                        playSound('collect');
+                        updateGameStats();
+                        powerUps.splice(i, 1);
+                    }
+                    
+                    // إزالة العناصر الخاصة التي تجاوزت اللوحة
+                    if (powerUps[i].x + powerUps[i].width < 0) {
+                        powerUps.splice(i, 1);
+                    }
+                }
+                
+                // تحديث التيربو
+                if (turboActive) {
+                    turboTime--;
+                    if (turboTime <= 0) {
+                        turboActive = false;
+                        obstacleSpeed /= 1.5;
+                    }
+                }
+            }
+            
+            // التحكم في القفز والانحناء
+            document.getElementById('jump-btn').onclick = () => {
+                if (!isJumping && !isDucking) {
+                    isJumping = true;
+                    jumpVelocity = -12;
+                    playSound('jump');
+                }
+            };
+            
+            document.getElementById('action-btn').onclick = () => {
+                if (!isJumping) {
+                    isDucking = true;
+                    playSound('move');
+                    setTimeout(() => {
+                        isDucking = false;
+                    }, 1000);
+                }
+            };
+            
+            document.getElementById('boost-btn').onclick = () => {
+                if (!turboActive) {
+                    turboActive = true;
+                    turboTime = 180; // 3 ثواني عند 60 إطار/ثانية
+                    obstacleSpeed *= 1.5;
+                    updateGameStats();
+                    playSound('collect');
+                }
+            };
+            
+            // دورة اللعبة
+            let frameCount = 0;
+            gameInterval = setInterval(() => {
+                if (isPaused) return;
+                
+                // مسح اللوحة
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // رسم الخلفية
+                drawBackground();
+                
+                // تحديث موقع الشخصية (القفز)
+                if (isJumping) {
+                    runnerY += jumpVelocity;
+                    jumpVelocity += gravity;
+                    
+                    if (runnerY >= groundLevel - runnerHeight) {
+                        runnerY = groundLevel - runnerHeight;
+                        isJumping = false;
+                        jumpVelocity = 0;
+                    }
+                }
+                
+                // إنشاء عوائق جديدة
+                if (frameCount % 90 === 0) {
+                    createObstacle();
+                }
+                
+                // إنشاء عناصر خاصة
+                if (frameCount % 200 === 0) {
+                    createPowerUp();
+                }
+                
+                // تحديث ورسم العوائق والعناصر الخاصة
+                updateObjects();
+                drawObstacles();
+                drawPowerUps();
+                
+                // رسم الشخصية
+                drawRunner();
+                
+                frameCount++;
+                
+                // زيادة الصعوبة مع الزمن
+                if (frameCount % 300 === 0) {
+                    obstacleSpeed += 0.5;
+                    level++;
+                    updateGameStats();
+                    playSound('levelUp');
+                }
+            }, 1000 / 60);
+        }
+
+        // لعبة الفضاء (من فكرتنا)
+        function startSpaceGame(ctx, canvas, gameLevel) {
+            // متغيرات اللعبة
+            let shipX = canvas.width / 2 - 25;
+            let shipY = canvas.height - 100;
+            let shipWidth = 50;
+            let shipHeight = 70;
+            let asteroids = [];
+            let fuels = [];
+            let enemies = [];
+            let bullets = [];
+            let powerUps = [];
+            let asteroidSpeed = 3 + (gameLevel - 1) * 1.5;
+            let fuelSpeed = 2;
+            let enemySpeed = 2 + (gameLevel - 1) * 1;
+            let bulletSpeed = 8;
+            let turboActive = false;
+            let turboTime = 0;
+            
+            // رسم المركبة الفضائية
+            function drawShip() {
+                // تأثير التيربو
+                if (turboActive) {
+                    ctx.fillStyle = 'rgba(76, 201, 240, 0.3)';
+                    ctx.beginPath();
+                    ctx.moveTo(shipX + shipWidth/2, shipY + shipHeight);
+                    ctx.lineTo(shipX - 10, shipY + shipHeight + 30);
+                    ctx.lineTo(shipX + shipWidth + 10, shipY + shipHeight + 30);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+                
+                // هيكل المركبة
+                ctx.fillStyle = '#9b59b6';
+                ctx.beginPath();
+                ctx.moveTo(shipX + shipWidth/2, shipY);
+                ctx.lineTo(shipX, shipY + shipHeight);
+                ctx.lineTo(shipX + shipWidth, shipY + shipHeight);
+                ctx.closePath();
+                ctx.fill();
+                
+                // قمرة القيادة
+                ctx.fillStyle = '#3498db';
+                ctx.beginPath();
+                ctx.arc(shipX + shipWidth/2, shipY + 25, 15, 0, Math.PI, true);
+                ctx.fill();
+                
+                // المحركات
+                ctx.fillStyle = '#e74c3c';
+                ctx.fillRect(shipX + 10, shipY + shipHeight, 10, 10);
+                ctx.fillRect(shipX + shipWidth - 20, shipY + shipHeight, 10, 10);
+                
+                // الأجنحة
+                ctx.fillStyle = '#8e44ad';
+                ctx.fillRect(shipX - 10, shipY + 40, 10, 20);
+                ctx.fillRect(shipX + shipWidth, shipY + 40, 10, 20);
+                
+                // الدرع
+                if (shield > 0) {
+                    ctx.strokeStyle = '#4361ee';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(shipX + shipWidth/2, shipY - 5);
+                    ctx.lineTo(shipX - 15, shipY + 45);
+                    ctx.lineTo(shipX, shipY + shipHeight + 5);
+                    ctx.lineTo(shipX + shipWidth, shipY + shipHeight + 5);
+                    ctx.lineTo(shipX + shipWidth + 15, shipY + 45);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            }
+            
+            // رسم الكويكبات
+            function drawAsteroids() {
+                ctx.fillStyle = '#95a5a6';
+                asteroids.forEach(asteroid => {
+                    ctx.beginPath();
+                    ctx.arc(asteroid.x, asteroid.y, asteroid.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // تفاصيل الكويكب
+                    ctx.fillStyle = '#7f8c8d';
+                    ctx.beginPath();
+                    ctx.arc(asteroid.x - asteroid.radius/3, asteroid.y - asteroid.radius/3, asteroid.radius/4, 0, Math.PI * 2);
+                    ctx.arc(asteroid.x + asteroid.radius/3, asteroid.y + asteroid.radius/4, asteroid.radius/5, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                ctx.fillStyle = '#95a5a6';
+            }
+            
+            // رسم الوقود
+            function drawFuels() {
+                ctx.fillStyle = '#f1c40f';
+                fuels.forEach(fuel => {
+                    ctx.fillRect(fuel.x, fuel.y, fuel.width, fuel.height);
+                    
+                    // تفاصيل الوقود
+                    ctx.fillStyle = '#f39c12';
+                    ctx.fillRect(fuel.x + 2, fuel.y + 5, fuel.width - 4, 5);
+                    ctx.fillRect(fuel.x + 2, fuel.y + 15, fuel.width - 4, 5);
+                    ctx.fillRect(fuel.x + 2, fuel.y + 25, fuel.width - 4, 5);
+                });
+                ctx.fillStyle = '#f1c40f';
+            }
+            
+            // رسم الأعداء
+            function drawEnemies() {
+                ctx.fillStyle = '#e74c3c';
+                enemies.forEach(enemy => {
+                    // هيكل العدو
+                    ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+                    
+                    // تفاصيل العدو
+                    ctx.fillStyle = '#c0392b';
+                    ctx.fillRect(enemy.x + 5, enemy.y + 5, enemy.width - 10, 5);
+                    ctx.fillRect(enemy.x + 5, enemy.y + 15, enemy.width - 10, 5);
+                });
+                ctx.fillStyle = '#e74c3c';
+            }
+            
+            // رسم الرصاص
+            function drawBullets() {
+                ctx.fillStyle = '#00ff00';
+                bullets.forEach(bullet => {
+                    ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                });
+            }
+            
+            // رسم العناصر الخاصة
+            function drawPowerUps() {
+                powerUps.forEach(powerUp => {
+                    if (powerUp.type === 'shield') {
+                        ctx.fillStyle = '#4361ee';
+                        ctx.beginPath();
+                        ctx.arc(powerUp.x + 15, powerUp.y + 15, 15, 0, Math.PI * 2);
+                        ctx.fill();
+                        
+                        ctx.fillStyle = 'white';
+                        ctx.font = 'bold 20px Arial';
+                        ctx.fillText('S', powerUp.x + 8, powerUp.y + 22);
+                    } else if (powerUp.type === 'heart') {
+                        ctx.fillStyle = '#f72585';
+                        ctx.beginPath();
+                        ctx.arc(powerUp.x + 15, powerUp.y + 15, 15, 0, Math.PI * 2);
+                        ctx.fill();
+                        
+                        ctx.fillStyle = 'white';
+                        ctx.font = 'bold 20px Arial';
+                        ctx.fillText('H', powerUp.x + 8, powerUp.y + 22);
+                    } else if (powerUp.type === 'turbo') {
+                        ctx.fillStyle = '#4cc9f0';
+                        ctx.beginPath();
+                        ctx.arc(powerUp.x + 15, powerUp.y + 15, 15, 0, Math.PI * 2);
+                        ctx.fill();
+                        
+                        ctx.fillStyle = 'white';
+                        ctx.font = 'bold 20px Arial';
+                        ctx.fillText('T', powerUp.x + 8, powerUp.y + 22);
+                    }
+                });
+            }
+            
+            // إنشاء كويكبات جديدة
+            function createAsteroid() {
+                const radius = Math.random() * 20 + 10;
+                asteroids.push({
+                    x: Math.random() * canvas.width,
+                    y: -radius,
+                    radius: radius,
+                    speed: Math.random() * 2 + asteroidSpeed
+                });
+            }
+            
+            // إنشاء وقود جديد
+            function createFuel() {
+                fuels.push({
+                    x: Math.random() * canvas.width,
+                    y: -20,
+                    width: 15,
+                    height: 30
+                });
+            }
+            
+            // إنشاء عدو جديد
+            function createEnemy() {
+                enemies.push({
+                    x: Math.random() * (canvas.width - 40),
+                    y: -40,
+                    width: 40,
+                    height: 30,
+                    speed: Math.random() * 2 + enemySpeed
+                });
+            }
+            
+            // إنشاء عناصر خاصة
+            function createPowerUp() {
+                const types = ['shield', 'heart', 'turbo'];
+                const type = types[Math.floor(Math.random() * types.length)];
+                
+                powerUps.push({
+                    x: Math.random() * canvas.width,
+                    y: -30,
+                    width: 30,
+                    height: 30,
+                    type: type
+                });
+            }
+            
+            // إطلاق رصاصة
+            function shoot() {
+                bullets.push({
+                    x: shipX + shipWidth/2 - 2,
+                    y: shipY,
+                    width: 4,
+                    height: 10,
+                    speed: bulletSpeed
+                });
+                playSound('move');
+            }
+            
+            // تحديث موقع الكويكبات والوقود والأعداء والرصاص والعناصر الخاصة
+            function updateObjects() {
+                // الكويكبات
+                for (let i = asteroids.length - 1; i >= 0; i--) {
+                    asteroids[i].y += asteroids[i].speed;
+                    
+                    // اكتشاف التصادم مع الكويكبات
+                    const dx = asteroids[i].x - (shipX + shipWidth/2);
+                    const dy = asteroids[i].y - (shipY + shipHeight/2);
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < asteroids[i].radius + 25) {
+                        // تصادم
+                        if (shield > 0) {
+                            shield--;
+                            playSound('collect');
+                        } else {
+                            lives--;
+                            playSound('crash');
+                        }
+                        updateGameStats();
+                        asteroids.splice(i, 1);
+                        
+                        if (lives <= 0) {
+                            endGame();
+                            return;
+                        }
+                    }
+                    
+                    // إزالة الكويكبات التي تجاوزت اللوحة
+                    if (asteroids[i].y > canvas.height + asteroids[i].radius) {
+                        asteroids.splice(i, 1);
+                    }
+                }
+                
+                // الوقود
+                for (let i = fuels.length - 1; i >= 0; i--) {
+                    fuels[i].y += fuelSpeed;
+                    
+                    // جمع الوقود
+                    if (fuels[i].x < shipX + shipWidth && 
+                        fuels[i].x + fuels[i].width > shipX &&
+                        fuels[i].y < shipY + shipHeight && 
+                        fuels[i].y + fuels[i].height > shipY) {
+                        // جمع الوقود
+                        score += 50;
+                        updateGameStats();
+                        playSound('collect');
+                        fuels.splice(i, 1);
+                    }
+                    
+                    // إزالة الوقود الذي تجاوز اللوحة
+                    if (fuels[i].y > canvas.height) {
+                        fuels.splice(i, 1);
+                    }
+                }
+                
+                // الأعداء
+                for (let i = enemies.length - 1; i >= 0; i--) {
+                    enemies[i].y += enemies[i].speed;
+                    
+                    // اكتشاف التصادم مع الأعداء
+                    if (enemies[i].x < shipX + shipWidth && 
+                        enemies[i].x + enemies[i].width > shipX &&
+                        enemies[i].y < shipY + shipHeight && 
+                        enemies[i].y + enemies[i].height > shipY) {
+                        // تصادم
+                        if (shield > 0) {
+                            shield--;
+                            playSound('collect');
+                        } else {
+                            lives--;
+                            playSound('crash');
+                        }
+                        updateGameStats();
+                        enemies.splice(i, 1);
+                        
+                        if (lives <= 0) {
+                            endGame();
+                            return;
+                        }
+                    }
+                    
+                    // إزالة الأعداء الذين تجاوزوا اللوحة
+                    if (enemies[i].y > canvas.height) {
+                        enemies.splice(i, 1);
+                    }
+                }
+                
+                // الرصاص
+                for (let i = bullets.length - 1; i >= 0; i--) {
+                    bullets[i].y -= bullets[i].speed;
+                    
+                    // اكتشاف اصطدام الرصاص بالأعداء
+                    for (let j = enemies.length - 1; j >= 0; j--) {
+                        if (bullets[i].x < enemies[j].x + enemies[j].width && 
+                            bullets[i].x + bullets[i].width > enemies[j].x &&
+                            bullets[i].y < enemies[j].y + enemies[j].height && 
+                            bullets[i].y + bullets[i].height > enemies[j].y) {
+                            // إصابة العدو
+                            score += 100;
+                            updateGameStats();
+                            enemies.splice(j, 1);
+                            bullets.splice(i, 1);
+                            playSound('collect');
+                            break;
+                        }
+                    }
+                    
+                    // إزالة الرصاص الذي تجاوز اللوحة
+                    if (bullets[i] && bullets[i].y + bullets[i].height < 0) {
+                        bullets.splice(i, 1);
+                    }
+                }
+                
+                // العناصر الخاصة
+                for (let i = powerUps.length - 1; i >= 0; i--) {
+                    powerUps[i].y += fuelSpeed;
+                    
+                    // جمع العناصر الخاصة
+                    if (powerUps[i].x < shipX + shipWidth && 
+                        powerUps[i].x + powerUps[i].width > shipX &&
+                        powerUps[i].y < shipY + shipHeight && 
+                        powerUps[i].y + powerUps[i].height > shipY) {
+                        // جمع العنصر الخاص
+                        if (powerUps[i].type === 'shield') {
+                            shield += 1;
+                        } else if (powerUps[i].type === 'heart') {
+                            lives = Math.min(lives + 1, 5);
+                        } else if (powerUps[i].type === 'turbo') {
+                            turboActive = true;
+                            turboTime = 300; // 5 ثواني عند 60 إطار/ثانية
+                            asteroidSpeed *= 1.5;
+                            enemySpeed *= 1.5;
+                        }
+                        
+                        playSound('collect');
+                        updateGameStats();
+                        powerUps.splice(i, 1);
+                    }
+                    
+                    // إزالة العناصر الخاصة التي تجاوزت اللوحة
+                    if (powerUps[i].y > canvas.height) {
+                        powerUps.splice(i, 1);
+                    }
+                }
+                
+                // تحديث التيربو
+                if (turboActive) {
+                    turboTime--;
+                    if (turboTime <= 0) {
+                        turboActive = false;
+                        asteroidSpeed /= 1.5;
+                        enemySpeed /= 1.5;
+                    }
+                }
+            }
+            
+            // التحكم في المركبة
+            document.getElementById('left-btn').onclick = () => {
+                if (shipX > 10) {
+                    shipX -= 20;
+                    playSound('move');
+                }
+            };
+            
+            document.getElementById('right-btn').onclick = () => {
+                if (shipX < canvas.width - shipWidth - 10) {
+                    shipX += 20;
+                    playSound('move');
+                }
+            };
+            
+            document.getElementById('action-btn').onclick = () => {
+                shoot();
+            };
+            
+            document.getElementById('boost-btn').onclick = () => {
+                if (!turboActive) {
+                    turboActive = true;
+                    turboTime = 180; // 3 ثواني عند 60 إطار/ثانية
+                    asteroidSpeed *= 1.5;
+                    enemySpeed *= 1.5;
+                    updateGameStats();
+                    playSound('collect');
+                }
+            };
+            
+            // دورة اللعبة
+            let frameCount = 0;
+            gameInterval = setInterval(() => {
+                if (isPaused) return;
+                
+                // مسح اللوحة
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // رسم الفضاء
+                ctx.fillStyle = '#2c3e50';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // رسم النجوم
+                ctx.fillStyle = '#ecf0f1';
+                for (let i = 0; i < 100; i++) {
+                    const x = (i * 37) % canvas.width;
+                    const y = (i * 23) % canvas.height;
+                    const size = Math.random() * 2 + 1;
+                    ctx.fillRect(x, y, size, size);
+                }
+                
+                // إنشاء كويكبات جديدة
+                if (frameCount % 60 === 0) {
+                    createAsteroid();
+                }
+                
+                // إنشاء وقود جديد
+                if (frameCount % 120 === 0) {
+                    createFuel();
+                }
+                
+                // إنشاء أعداء جدد
+                if (frameCount % 150 === 0) {
+                    createEnemy();
+                }
+                
+                // إنشاء عناصر خاصة
+                if (frameCount % 200 === 0) {
+                    createPowerUp();
+                }
+                
+                // تحديث ورسم الكويكبات والوقود والأعداء والرصاص والعناصر الخاصة
+                updateObjects();
+                drawAsteroids();
+                drawFuels();
+                drawEnemies();
+                drawBullets();
+                drawPowerUps();
+                
+                // رسم المركبة
+                drawShip();
+                
+                frameCount++;
+                
+                // زيادة الصعوبة مع الزمن
+                if (frameCount % 300 === 0) {
+                    asteroidSpeed += 0.5;
+                    enemySpeed += 0.5;
+                    level++;
+                    updateGameStats();
+                    playSound('levelUp');
+                }
+            }, 1000 / 60);
+        }
+
+        // إنهاء اللعبة
+        function endGame() {
+            clearInterval(gameInterval);
+            playSound('gameOver');
+            alert(`انتهت اللعبة! النقاط النهائية: ${score}`);
+            document.getElementById('game-area').classList.remove('active');
+            
+            // تحديث تقدم الإنجازات
+            if (currentGame === 'car-game') {
+                currentUser.achievements['car-game'] = Math.max(currentUser.achievements['car-game'], Math.min(100, Math.floor(score / 10)));
+            } else if (currentGame === 'running-game') {
+                currentUser.achievements['running-game'] = Math.max(currentUser.achievements['running-game'], Math.min(100, Math.floor(score / 15)));
+            } else if (currentGame === 'space-game') {
+                currentUser.achievements['space-game'] = Math.max(currentUser.achievements['space-game'], Math.min(100, Math.floor(score / 20)));
+            }
+            
+            updateUserInterface();
+        }
+
+        // تحديث واجهة المستخدم عند التحميل
+        updateUserInterface();
+    </script>
+</body>
+</html>
