@@ -1,0 +1,59 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+
+jobs:
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📦 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm install
+
+      - name: 🔑 Login to Expo
+        run: npx expo login --token ${{ secrets.EXPO_TOKEN }}
+        
+      - name: 🔧 Configure EAS
+        run: |
+          npx eas-cli config --non-interactive
+          echo "✅ EAS configured"
+
+      - name: 🏗️ Build Android APK
+        run: |
+          echo "🚀 Starting Android APK build..."
+          npx eas-cli build --platform android --profile production --non-interactive
+          echo "✅ Build completed!"
+
+      - name: 📤 Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: palestine-apk
+          path: |
+            **/*.apk
+            **/*.aab
+          retention-days: 7
+
+      - name: 📝 Build Summary
+        run: |
+          echo "🎉 Android APK build completed successfully!"
+          echo "📱 APK will be available in the Artifacts section"
+          echo "🔗 Expo Builds: https://expo.dev/accounts/Sites87733-glitch/projects/palestine-app/builds"
